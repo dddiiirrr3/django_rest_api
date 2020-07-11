@@ -2,8 +2,10 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
 from django.contrib.auth.models import User
-
+from django.contrib.auth import get_user_model
+from django.conf import settings
 from .models import Order
+from django.core.mail import mail_admins
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -48,6 +50,7 @@ class OrderSerializer(serializers.ModelSerializer):
         )
 
         order.save()
+        mail_admins('ha', 'hahaha')
         return order
 
 

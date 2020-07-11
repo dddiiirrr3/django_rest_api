@@ -12,9 +12,11 @@ from .serializers import OrderSerializer, UserSerializer
 
 
 class OrderCreate(generics.CreateAPIView):
-    authentication_classes = ()
-    permission_classes = ()
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = OrderSerializer
+
+
 
 
 
@@ -23,6 +25,7 @@ class UserCreate(generics.CreateAPIView):
     authentication_classes = ()
     permission_classes = ()
     serializer_class = UserSerializer
+
 
 
 
