@@ -27,7 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# администраторы системы. сюда будут отправляться mail-ы
 ADMINS = [('root', 'root@root.ru'),]
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',   # подключим дополнение к django, реализуещее REST
-    'rest_framework.authtoken',
-    'api',              # подключим приложение, которое мы создали
+    'rest_framework',            # подключим дополнение к django, реализуещее REST
+    'rest_framework.authtoken',  # подключим для поддержки авторизации
+    'api',                       # подключим приложение, которое мы создали
 ]
 
 

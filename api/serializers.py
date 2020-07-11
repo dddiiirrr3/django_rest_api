@@ -1,11 +1,11 @@
+from django.core.mail import mail_admins
+from django.contrib.auth.models import User
+
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
-from django.conf import settings
 from .models import Order
-from django.core.mail import mail_admins
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -24,22 +24,11 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class AuthorSerializer(serializers.Serializer):
-    first_name = serializers.CharField(max_length=50)
-    last_name = serializers.CharField(max_length=50)
-    third_name = serializers.CharField(max_length=50)
-
-
 class OrderSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Order
         fields = ('book', 'user', 'user_phone_number', 'comment')
-
-    #book_id = serializers.IntegerField()
-    #user_id = serializers.IntegerField()
-    #user_phone_number = serializers.CharField()
-    #comment = serializers.CharField()
-    #order_date = serializers.DateField()
 
     def create(self, validated_data):
         order = Order(
@@ -48,7 +37,6 @@ class OrderSerializer(serializers.ModelSerializer):
             user_phone_number=validated_data['user_phone_number'],
             comment=validated_data['comment'],
         )
-
         order.save()
         mail_admins('ha', 'hahaha')
         return order

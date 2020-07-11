@@ -3,11 +3,10 @@ from django.contrib.auth import authenticate
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
-from .models import Author, Book, Order
+from .models import Author, Book
 from .serializers import OrderSerializer, UserSerializer
 
 
@@ -17,16 +16,10 @@ class OrderCreate(generics.CreateAPIView):
     serializer_class = OrderSerializer
 
 
-
-
-
-
 class UserCreate(generics.CreateAPIView):
     authentication_classes = ()
     permission_classes = ()
     serializer_class = UserSerializer
-
-
 
 
 class AuthorsView(APIView):
@@ -34,7 +27,6 @@ class AuthorsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        #authors = Author.objects.all()
         authors =  [user.last_name + ' ' + user.first_name + ' ' + user.third_name for user in Author.objects.all()]
         authors_id = [user.id for user in Author.objects.all()]
         books = [book.author.id for book in Book.objects.all()]
@@ -70,18 +62,4 @@ class BooksView(APIView):
 
     def get(self, request):
         books = [book.name for book in Book.objects.all()]
-
         return Response({"books": books})
-
-
-class LoginView(APIView):
-    permission_classes = ()
-
-    def post(self, request,):
-        username = request.data.get("username")
-        password = request.data.get("password")
-        user = authenticate(username=username, password=password)
-        if user:
-            return Response({"token": user.auth_token.key})
-        else:
-            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
