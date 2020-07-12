@@ -27,11 +27,13 @@ class AuthorsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        authors =  [user.last_name + ' ' + user.first_name + ' ' + user.third_name for user in Author.objects.all()]
+        authors = [user.last_name + ' ' + user.first_name + ' ' + user.third_name for user in Author.objects.all()]
         authors_id = [user.id for user in Author.objects.all()]
         books = [book.author.id for book in Book.objects.all()]
         books_names = [[book.author.id, book.name] for book in Book.objects.all()]
 
+        # генератор словарей внутри словаря.
+        # в дальнейших циклах в него будут добавляться нужные данные по заданию
         response = {"authors": [{'fio': author} for author in authors]}
         count_books = [0 for i in range(len(authors))]
 
@@ -46,14 +48,10 @@ class AuthorsView(APIView):
         for i in range(len(authors_id)):
             count_books[i] = books.count(authors_id[i])
 
-
         for i in range(len(response['authors'])):
             response['authors'][i]['books_count'] = count_books[i]
 
-
-        return Response(
-            response
-        )
+        return Response(response)
 
 
 class BooksView(APIView):
