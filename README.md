@@ -1,5 +1,6 @@
 **requirements:**
 ```
+python == 3.8.3
 django == 3.0.7
 djangorestframework == 3.11.0
 ```
